@@ -5,6 +5,15 @@ const coven = require('coven/server')
 const fs = require('fs')
 let listenPort = (process.env.PORT || 8081)
 const deltaWebsocketServer = new WebSocket.Server({ 'port': listenPort, clientTracking: true });
+
+const got = require("./got/got")
+
+// a local copy of the current graph state, for synchronization purposes
+let localGraph = {
+	nodes: {},
+	arcs: []
+}
+
 // http.listen(listenPort, function(){
 //   // console.log('listening on ' + listenPort);
 // })
@@ -105,6 +114,43 @@ const deltaWebsocketServer = new WebSocket.Server({ 'port': listenPort, clientTr
       case "deltas": {
         
         // runGOT(id, msg.data)
+
+        // synchronize our local copy:
+			try {
+				//console.log('\n\npreApply', localGraph.nodes.resofilter_120)
+				got.applyDeltasToGraph(localGraph, msg.data);
+				//console.log('\n\npostApply', JSON.stringify(localGraph.nodes.resofilter_120.resonance))
+			} catch (e) {
+				console.warn(e);
+			}
+
+			//console.log(msg.data)
+			// TODO: merge OTs
+			
+			let response = {
+				cmd: "deltas",
+				date: Date.now(),
+				data: msg.data
+			};
+			console.log(msg.data)
+			
+			// check if the recording status is active, if so push received delta(s) to the recordJSON
+			if (recordStatus === 1){
+				
+				for(i = 0; i < msg.data.length; i++){
+					
+					msg.data[i]["timestamp"] = Date.now()
+					recordJSON.deltas.push(msg.data[i])
+				}
+				
+			}
+
+			//fs.appendFileSync(OTHistoryFile, ',' + JSON.stringify(response), "utf-8")
+
+			//OTHistory.push(JSON.stringify(response))
+			console.log('localgraph',localGraph, '\n')
+			send_all_clients(JSON.stringify(response));
+
       } break;
 
       case "fromTeaparty":
@@ -299,3 +345,16 @@ const deltaWebsocketServer = new WebSocket.Server({ 'port': listenPort, clientTr
       default: console.log("received JSON", msg, typeof msg);
     }
   }
+
+
+  // send a (string) message to all connected clients:
+function send_all_clients(msg, ignore) {
+	deltaWebsocketServer.clients.forEach(function each(client) {
+		if (client == ignore) return;
+		try {
+			client.send(msg);
+		} catch (e) {
+			console.error(e);
+		};
+	});
+}
