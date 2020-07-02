@@ -14,6 +14,7 @@ let localGraph = {
 	arcs: []
 }
 
+let recordStatus = 0
 // http.listen(listenPort, function(){
 //   // console.log('listening on ' + listenPort);
 // })
