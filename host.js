@@ -50,7 +50,7 @@ const deltaWebsocketServer = new WebSocket.Server({ 'port': listenPort, clientTr
     console.log("server has "+deltaWebsocketServer.clients.size+" connected clients");
     //	ws.id = uuid.v4();
     const id = ++sessionId;
-    const location = url.parse(req.url, true);
+    // const location = url.parse(req.url, true);
     // ip = req.connection.remoteAddress.split(':')[3] 
     ip = req.headers.host.split(':')[0]
     if(!ip){
