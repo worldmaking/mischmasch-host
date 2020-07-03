@@ -47,14 +47,8 @@ let recordStatus = 0
   // sendAllLocalClients(configp2p)
   // whenever a pal connects to this websocket:
   deltaWebsocketServer.on('connection', function(deltaWebsocket, req) {
-    
-    // get the new connection to identify as either a pal or the teaparty
-    let rsvp = JSON.stringify({
-      cmd: 'rsvp',
-      date: Date.now(), 
-      data: 'rsvp',
-    })
-    deltaWebsocket.send(rsvp)
+    let source;
+
     // do any
     console.log("server received a connection");
     console.log("server has "+deltaWebsocketServer.clients.size+" connected clients");
@@ -99,6 +93,7 @@ let recordStatus = 0
       } else {
         try {
           handlemessage(JSON.parse(e), id);
+          
         } catch (e) {
           console.log('bad JSON: ', e);
         }
@@ -112,6 +107,11 @@ let recordStatus = 0
 
     console.log(msg)
     switch (msg.cmd) {
+
+      case 'rsvp':{
+        source = msg.data
+      }
+      break;
       case "deltas": {
         
         // runGOT(id, msg.data)
