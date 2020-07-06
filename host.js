@@ -123,7 +123,7 @@ let recordStatus = 0
     deltaWebsocket.on('close', function(connection) {
       //clearInterval(handShakeInterval);
       if(deltaWebsocketServer.clients.size === 0){
-        clearInterval(interval);
+        // clearInterval(interval);
       }
       console.log("deltaWebsocket: connection closed");
           console.log("server has "+deltaWebsocketServer.clients.size+" connected clients");
