@@ -51,7 +51,7 @@ let recordStatus = 0
 //   // console.log('listening on ' + listenPort);
 // })
 
-  scenefile = JSON.parse(fs.readFileSync(__dirname + "/got/simple_scene.json"))
+  scenefile = JSON.parse(fs.readFileSync(__dirname + "/scene_rich.json"))
   // fs.writeFileSync('simpleGraph.json', JSON.stringify(sceneFile))
   localGraph = got.graphFromDeltas(scenefile)
   //console.log(localGraph)
