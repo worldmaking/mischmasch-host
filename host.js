@@ -33,7 +33,7 @@ setInterval(() => {
   deltaWebsocketServer.clients.forEach((client) => {
     client.send(JSON.stringify({
       cmd: 'ping',
-      data: guestlist,
+      //data: guestlist,
       date: Date.now() 
     }))
   });
