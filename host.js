@@ -131,7 +131,6 @@ let recordStatus = 0
     
     // respond to any messages from the client:
     deltaWebsocket.on('message', function(e) {
-      console.log(e)
       if (e instanceof Buffer) {
         // get an arraybuffer from the message:
         const ab = e.buffer.slice(e.byteOffset,e.byteOffset+e.byteLength);
@@ -154,7 +153,6 @@ let recordStatus = 0
 
   function handlemessage(msg, id) {
 
-    console.log(msg)
     switch (msg.cmd) {
 
       case 'rsvp':{
