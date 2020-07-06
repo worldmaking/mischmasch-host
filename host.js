@@ -18,7 +18,7 @@ function heartbeat() {
 }
 
 const interval = setInterval(function ping() {
-  wss.clients.forEach(function each(ws) {
+  deltaWebsocketServer.clients.forEach(function each(ws) {
     if (ws.isAlive === false) {
       // console.log(ws)
       return ws.terminate();
@@ -30,7 +30,7 @@ const interval = setInterval(function ping() {
 }, 3000);
 
 setInterval(() => {
-  wss.clients.forEach((client) => {
+  deltaWebsocketServer.clients.forEach((client) => {
     client.send(JSON.stringify({
       cmd: 'ping',
       data: guestlist,
