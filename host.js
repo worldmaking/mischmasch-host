@@ -11,23 +11,23 @@ const { argv } = require('yargs');
 
 // custom keepAlive function to detect and handle broken connections
 
-function noop() {}
+// function noop() {}
 
-function heartbeat() {
-  this.isAlive = true;
-}
+// function heartbeat() {
+//   this.isAlive = true;
+// }
 
-const interval = setInterval(function ping() {
-  deltaWebsocketServer.clients.forEach(function each(ws) {
-    if (ws.isAlive === false) {
-      // console.log(ws)
-      return ws.terminate();
-    }
+// const interval = setInterval(function ping() {
+//   deltaWebsocketServer.clients.forEach(function each(ws) {
+//     if (ws.isAlive === false) {
+//       // console.log(ws)
+//       return ws.terminate();
+//     }
  
-    ws.isAlive = false;
-    ws.ping(noop);
-  });
-}, 3000);
+//     ws.isAlive = false;
+//     ws.ping(noop);
+//   });
+// }, 3000);
 
 setInterval(() => {
   deltaWebsocketServer.clients.forEach((client) => {
@@ -164,7 +164,7 @@ let recordStatus = 0
 
       case 'keepAlive':
         // ignore 
-        console.log(msg)
+        console.log('line 167', msg)
       break
 
 
