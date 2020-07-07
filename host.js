@@ -1,7 +1,7 @@
 const WebSocket = require('ws');
 // const app = require('express')()
 // const http = require('http').createServer(app);;
-const coven = require('coven/server')
+
 const fs = require('fs')
 let listenPort = (process.env.PORT || 8081)
 const deltaWebsocketServer = new WebSocket.Server({ 'port': listenPort, clientTracking: true });
@@ -413,3 +413,15 @@ function send_all_clients(msg, ignore) {
 		};
 	});
 }
+
+
+const createSignalingBroker = require('coven/server');
+const DEFAULT_PORT = 8082;
+const PORT = +(process.env.PORT || DEFAULT_PORT);
+ 
+createSignalingBroker({
+  port: PORT,
+  onMessage({ room, type, origin, target }) {
+    console.log(`[${room}::${type}] ${origin} -> ${target || '<BROADCAST>'}`);
+  },
+});
