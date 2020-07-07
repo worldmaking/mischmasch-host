@@ -19,6 +19,9 @@
   "homepage": "https://github.com/worldmaking/mischmasch-host#readme",
   "dependencies": {
     "coven": "^0.5.0",
+    "peer": "^0.5.3",
+    "socket.io": "^2.3.0",
+    "socket.io-p2p-server": "^1.2.0",
     "ws": "^7.3.0",
     "yargs": "^15.4.0"
   }
