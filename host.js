@@ -9,6 +9,37 @@ const deltaWebsocketServer = new WebSocket.Server({ 'port': listenPort, clientTr
 const got = require("./got/got")
 const { argv } = require('yargs');
 
+// custom keepAlive function to detect and handle broken connections
+
+function noop() {}
+
+function heartbeat() {
+  this.isAlive = true;
+}
+
+const interval = setInterval(function ping() {
+  deltaWebsocketServer.clients.forEach(function each(ws) {
+    if (ws.isAlive === false) {
+      // console.log(ws)
+      return ws.terminate();
+    }
+ 
+    ws.isAlive = false;
+    ws.ping(noop);
+  });
+}, 3000);
+
+setInterval(() => {
+  deltaWebsocketServer.clients.forEach((client) => {
+    client.send(JSON.stringify({
+      cmd: 'ping',
+      //data: guestlist,
+      date: Date.now() 
+    }))
+  });
+}, 3000);
+
+
 // a local copy of the current graph state, for synchronization purposes
 let localGraph = {
 	nodes: {},
@@ -91,6 +122,9 @@ let recordStatus = 0
     // what to do if client disconnects?
     deltaWebsocket.on('close', function(connection) {
       //clearInterval(handShakeInterval);
+      if(deltaWebsocketServer.clients.size === 0){
+        clearInterval(interval);
+      }
       console.log("deltaWebsocket: connection closed");
           console.log("server has "+deltaWebsocketServer.clients.size+" connected clients");
     });
@@ -127,6 +161,13 @@ let recordStatus = 0
         source = msg.data
       }
       break;
+
+      case 'keepAlive':
+        // ignore 
+        console.log(msg)
+      break
+
+
       case "deltas": {
         
         // runGOT(id, msg.data)
