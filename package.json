@@ -2,11 +2,10 @@
   "name": "mischmasch-host",
   "version": "1.0.0",
   "description": "",
-  "main": "host.js",
+  "main": "userDataServer.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node userDataServer.js",
-    "deploy": "gcloud app deploy"
+    "start": "node userDataServer.js"
   },
   "repository": {
     "type": "git",
