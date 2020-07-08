@@ -16,7 +16,7 @@
 
 # [START appengine_websockets_yaml]
 runtime: nodejs10
-env: standard
+env: flex
 
 
 # Use only a single instance, so that this local-memory-only chat app will work
