@@ -15,7 +15,7 @@
 #   script: auto
 
 # [START appengine_websockets_yaml]
-runtime: nodejs
+runtime: nodejs10
 env: standard
 
 
